@@ -2821,6 +2821,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         this.opts.element.trigger($.Event("select2-enter-on-closed"));
                         return;
                     } else if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey) {
+                        this.opts.element.trigger($.Event("select2-enter-on-closed"));
                         return;
                     }
                 }
