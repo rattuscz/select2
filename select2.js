@@ -2194,6 +2194,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
 
                 if (this.opts.openOnEnter === false && e.which === KEY.ENTER) {
+                    this.opts.element.trigger($.Event("select2-enter-on-closed"));
                     killEvent(e);
                     return;
                 }
@@ -2818,6 +2819,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     if (this.opts.openOnEnter === false) {
                         return;
                     } else if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey) {
+                        this.opts.element.trigger($.Event("select2-enter-on-closed"));
                         return;
                     }
                 }
