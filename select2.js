@@ -1948,6 +1948,12 @@ the specific language governing permissions and limitations under the Apache Lic
             if (width !== null) {
                 this.container.css("width", width);
             }
+        },
+        scrollToEnd: function() {
+            var choices = this.findHighlightableChoices();
+            if (choices.length)
+                this.highlight(choices.length - 1);
+            this.results.scrollTop(this.results.get(0).scrollHeight - this.results.height());
         }
     });
 
@@ -2575,12 +2581,6 @@ the specific language governing permissions and limitations under the Apache Lic
                     }
                 }
             }
-        },
-        scrollToEnd: function() {
-            var choices = this.findHighlightableChoices();
-            if (choices.length)
-                this.highlight(choices.length - 1);
-            this.results.scrollTop(this.results.get(0).scrollHeight - this.results.height());
         }
     });
 
