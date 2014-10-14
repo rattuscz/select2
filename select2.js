@@ -2134,13 +2134,22 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (229 == e.keyCode) return;
 
                 if (e.which === KEY.PAGE_UP || e.which === KEY.PAGE_DOWN) {
-                    // prevent the page from scrolling
+                    // allow pageup/down
                     killEvent(e);
+                    var pageSize = (this.opts.pageSize) ? this.opts.pageSize : 10;
+                    var index = this.highlight();
+                    var choices = this.findHighlightableChoices();
+                    if (e.which === KEY.PAGE_UP && index < pageSize) {
+                        pageSize = index;
+                    }
+                    if (e.which === KEY.PAGE_DOWN && index+pageSize >= choices.length) {
+                        this.scrollToEnd();
+                    } else {
+                         this.moveHighlight((e.which === KEY.PAGE_UP) ? -pageSize : pageSize);
+                    }
                     return;
-                }
-
-                switch (e.which) {
-                    case KEY.UP:
+                }                switch (e.which) {
+                  case KEY.UP:
                     case KEY.DOWN:
                         this.moveHighlight((e.which === KEY.UP) ? -1 : 1);
                         killEvent(e);
@@ -2775,6 +2784,21 @@ the specific language governing permissions and limitations under the Apache Lic
                     case KEY.ESC:
                         this.cancel(e);
                         killEvent(e);
+                        return;
+                    case KEY.PAGE_UP:
+                    case KEY.PAGE_DOWN:
+                        killEvent(e);
+                        var pageSize = (this.opts.pageSize) ? this.opts.pageSize : 10;
+                        var index = this.highlight();
+                        var choices = this.findHighlightableChoices();
+                        if (e.which === KEY.PAGE_UP && index < pageSize) {
+                            pageSize = index;
+                        }
+                        if (e.which === KEY.PAGE_DOWN && index+pageSize >= choices.length) {
+                            this.scrollToEnd();
+                        } else {
+                            this.moveHighlight((e.which === KEY.PAGE_UP) ? -pageSize : pageSize);
+                        }
                         return;
                     }
                 }
