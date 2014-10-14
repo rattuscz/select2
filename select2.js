@@ -1948,6 +1948,12 @@ the specific language governing permissions and limitations under the Apache Lic
             if (width !== null) {
                 this.container.css("width", width);
             }
+        },
+        scrollToEnd: function() {
+            var choices = this.findHighlightableChoices();
+            if (choices.length)
+                this.highlight(choices.length - 1);
+            this.results.scrollTop(this.results.get(0).scrollHeight - this.results.height());
         }
     });
 
@@ -2148,7 +2154,9 @@ the specific language governing permissions and limitations under the Apache Lic
                          this.moveHighlight((e.which === KEY.PAGE_UP) ? -pageSize : pageSize);
                     }
                     return;
-                }                switch (e.which) {
+                }
+
+                switch (e.which) {
                   case KEY.UP:
                     case KEY.DOWN:
                         this.moveHighlight((e.which === KEY.UP) ? -1 : 1);
@@ -2159,7 +2167,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         killEvent(e);
                         return;
                     case KEY.TAB:
-                        this.selectHighlighted({noFocus: true});
+                        this.opts.onTabSelect(this,e);
                         return;
                     case KEY.ESC:
                         this.cancel(e);
@@ -2188,6 +2196,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
 
                 if (this.opts.openOnEnter === false && e.which === KEY.ENTER) {
+                    this.opts.element.trigger($.Event("select2-enter-on-closed"));
                     killEvent(e);
                     return;
                 }
@@ -2778,8 +2787,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         killEvent(e);
                         return;
                     case KEY.TAB:
-                        this.selectHighlighted({noFocus:true});
-                        this.close();
+                        this.opts.onTabSelect(this, e);
                         return;
                     case KEY.ESC:
                         this.cancel(e);
@@ -2810,6 +2818,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
                 if (e.which === KEY.ENTER) {
                     if (this.opts.openOnEnter === false) {
+                        this.opts.element.trigger($.Event("select2-enter-on-closed"));
                         return;
                     } else if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey) {
                         return;
@@ -3509,6 +3518,9 @@ the specific language governing permissions and limitations under the Apache Lic
             }
 
             return true;
+        },
+        onTabSelect: function(instance,event) {
+            instance.selectHighlighted({noFocus:true});
         }
     };
 
